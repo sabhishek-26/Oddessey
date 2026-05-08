@@ -5,3 +5,5 @@
 .npm/
 __pycache__/
 *.pyc
+*.db
+odyssey.db

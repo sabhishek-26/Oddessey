@@ -6,7 +6,6 @@
   <meta name="description" content="Odyssey - An intelligent travel design engine powered by Google Gemini AI." />
   <title>Odyssey - Intelligent Travel Design</title>
   
-  <!-- (Google Services) Google Fonts Integration -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,18 +27,8 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-gradient);
-      background-attachment: fixed;
-      color: var(--text-main);
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
+    body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); background-attachment: fixed; color: var(--text-main); min-height: 100vh; line-height: 1.6; }
     .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
-    
-    /* (Accessibility) Hidden text for screen readers only */
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
 
     header { text-align: center; padding: 4rem 0 3rem; animation: fadeIn 0.6s ease-out forwards; }
@@ -47,52 +36,42 @@
     .hero-subtitle { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
     .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-    .glass-card {
-      background: var(--surface-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--surface-border); border-radius: 16px; padding: 2.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); animation: fadeIn 0.6s ease-out forwards;
-    }
+    .glass-card { background: var(--surface-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--surface-border); border-radius: 16px; padding: 2.5rem; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); animation: fadeIn 0.6s ease-out forwards; }
 
     .form-group { margin-bottom: 1.5rem; }
     .form-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 500; margin-bottom: 0.5rem; color: #e2e8f0; }
-    .form-input, .form-select, .form-textarea {
-      width: 100%; background: rgba(15, 23, 42, 0.5); border: 1px solid var(--surface-border);
-      color: var(--text-main); padding: 0.875rem 1rem; border-radius: 8px; font-family: inherit; font-size: 1rem; transition: all 0.2s;
-    }
-    /* (Accessibility) High contrast focus rings */
+    .form-input, .form-select, .form-textarea { width: 100%; background: rgba(15, 23, 42, 0.5); border: 1px solid var(--surface-border); color: var(--text-main); padding: 0.875rem 1rem; border-radius: 8px; font-family: inherit; font-size: 1rem; transition: all 0.2s; }
     .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent-primary); box-shadow: var(--focus-ring); }
     .form-textarea { resize: vertical; min-height: 100px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
-    .btn-primary {
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%;
-      background: var(--accent-gradient); color: white; border: none; padding: 1rem 1.5rem; font-size: 1.1rem;
-      font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s;
-    }
+    .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; background: var(--accent-gradient); color: white; border: none; padding: 1rem 1.5rem; font-size: 1.1rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
     .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3); }
     .btn-primary:focus-visible { outline: none; box-shadow: var(--focus-ring); }
     .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid var(--surface-border); color: white; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; font-weight: 500; transition: background 0.2s; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.2); }
 
     .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Itinerary Results */
     #results-container { display: none; opacity: 0; animation: fadeIn 0.6s ease-out forwards; }
     .itinerary-header { text-align: center; margin-bottom: 3rem; }
-    .itinerary-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem; }
+    .itinerary-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
     .stat-badge { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.95rem; font-weight: 500; color: #d8b4fe; display: flex; align-items: center; gap: 0.5rem; }
 
-    .day-card { background: var(--surface-color); border: 1px solid var(--surface-border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; transition: transform 0.3s; }
+    .day-card { background: var(--surface-color); border: 1px solid var(--surface-border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; transition: transform 0.3s; page-break-inside: avoid; }
     .day-card:hover { transform: translateX(5px); border-color: rgba(139, 92, 246, 0.5); }
     .day-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--surface-border); }
     .day-number { background: var(--accent-gradient); color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 1.2rem; }
-    .day-theme { font-size: 1.25rem; font-weight: 600; }
+    .day-theme { font-size: 1.25rem; font-weight: 600; flex-grow:1; }
+    .day-city { color: var(--accent-secondary); font-size: 0.9rem; border: 1px solid var(--accent-secondary); padding: 0.2rem 0.6rem; border-radius: 12px;}
     
     .activity-item { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
     .activity-time { min-width: 90px; font-weight: 600; color: var(--accent-secondary); font-size: 0.95rem; }
     .activity-content { background: rgba(15, 23, 42, 0.4); padding: 1.5rem; border-radius: 8px; flex-grow: 1; border: 1px solid transparent; transition: border-color 0.2s; }
-    .activity-content:hover { border-color: rgba(236, 72, 153, 0.3); }
     .activity-title { font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 600; }
     .activity-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5;}
     .activity-meta { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem; color: #e2e8f0; }
@@ -100,28 +79,49 @@
     a.meta-item:hover { background: rgba(139, 92, 246, 0.2); color: white; }
 
     .error-msg { display: none; color: #fca5a5; margin-bottom: 1rem; padding: 1rem; background: rgba(239, 68, 68, 0.15); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 500;}
+    .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .toolbar-actions { display: flex; gap: 1rem; }
+
+    /* Print Styles (Export to PDF) */
+    @media print {
+      body { background: white; color: black; font-size: 12pt; }
+      .container { max-width: 100%; padding: 0; }
+      .glass-card, .day-card { background: none; border: 1px solid #ccc; box-shadow: none; color: black; }
+      .gradient-text { background: none; color: black; -webkit-text-fill-color: black; }
+      .hero-subtitle, .activity-desc, .stat-badge { color: #333; }
+      .stat-badge { border-color: #999; background: #f0f0f0; }
+      .activity-content { background: #fafafa; border: 1px solid #eee; }
+      .meta-item, .day-city { color: #555; background: none; border: 1px solid #ccc; }
+      .day-number { background: #333; color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .toolbar, button, a.meta-item i { display: none !important; }
+      @page { margin: 1cm; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1 class="hero-title"><span class="gradient-text">Odyssey</span></h1>
-      <p class="hero-subtitle">Design your ultimate journey. Powered by real-time Google AI.</p>
+      <p class="hero-subtitle">Design your ultimate journey. Powered by Google AI.</p>
     </header>
 
     <main>
-      <!-- (Accessibility) Semantic form and ARIA states -->
+      <div id="loading-overlay" style="display:none; text-align:center; padding: 4rem;">
+        <div class="spinner" style="display:inline-block; border-top-color:var(--accent-primary); width:40px; height:40px; margin-bottom:1rem;"></div>
+        <h2>Loading your unique itinerary...</h2>
+      </div>
+
       <div id="form-container" class="glass-card">
         <form id="trip-form" aria-label="Trip planning form">
           <div class="form-group">
-            <label for="destination" class="form-label"><i data-lucide="map-pin"></i> Destination</label>
-            <input required id="destination" type="text" class="form-input" placeholder="e.g. Kyoto, Japan or Amalfi Coast" aria-required="true" />
+            <label for="destination" class="form-label"><i data-lucide="map"></i> Destination(s)</label>
+            <input required id="destination" type="text" class="form-input" placeholder="e.g. Kyoto, or Rome to Paris to London" aria-required="true" />
           </div>
 
           <div class="grid-2">
             <div class="form-group">
-              <label for="days" class="form-label"><i data-lucide="calendar"></i> Duration (Days)</label>
-              <input required id="days" type="number" min="1" max="30" value="3" class="form-input" aria-required="true"/>
+              <label for="days" class="form-label"><i data-lucide="calendar"></i> Total Duration (Days)</label>
+              <input required id="days" type="number" min="1" max="30" value="7" class="form-input" aria-required="true"/>
             </div>
             <div class="form-group">
               <label for="travelers" class="form-label"><i data-lucide="users"></i> Travelers</label>
@@ -132,44 +132,49 @@
           <div class="form-group">
             <label for="budget" class="form-label"><i data-lucide="wallet"></i> Budget Level</label>
             <select required id="budget" class="form-select" aria-required="true">
-              <option value="Budget">Budget - Backpacking, Hostels, Street Food</option>
-              <option value="Moderate" selected>Moderate - 3/4 Star Hotels, Good Restaurants</option>
-              <option value="Luxury">Luxury - 5 Star, Fine Dining, Private Tours</option>
+              <option value="Budget">Budget - Backpacking, Hostels, Transit</option>
+              <option value="Moderate" selected>Moderate - 3/4 Star Hotels, Trains</option>
+              <option value="Luxury">Luxury - 5 Star, Fine Dining, Flights/Private</option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="interests" class="form-label"><i data-lucide="sparkles"></i> Interests & Constraints</label>
-            <textarea id="interests" class="form-textarea" placeholder="e.g. Must visit art museums, vegetarian food only..."></textarea>
+            <textarea id="interests" class="form-textarea" placeholder="e.g. History buffs, must visit the Louvre, vegetarian food only..."></textarea>
           </div>
 
-          <!-- (Accessibility) aria-live for announcing errors dynamically -->
           <div id="error-box" class="error-msg" aria-live="assertive" role="alert"></div>
 
           <button type="submit" id="submit-btn" class="btn-primary" aria-label="Generate Itinerary">
-            <span id="btn-text" style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="navigation"></i> Generate Magic Itinerary</span>
+            <span id="btn-text" style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="navigation"></i> Generate Magic Route</span>
             <div id="spinner" class="spinner" aria-hidden="true"></div>
-            <span id="loading-text" class="sr-only">Loading, please wait...</span>
+            <span id="loading-text" class="sr-only">Processing...</span>
           </button>
         </form>
       </div>
 
-      <!-- (Accessibility) aria-live polite for results -->
       <div id="results-container" aria-live="polite">
-        <button id="reset-btn" aria-label="Plan Another Trip" style="background:none; border:none; color:var(--text-muted); cursor:pointer; margin-bottom:2rem; text-decoration:underline; font-size:1rem;">← Plan Another Trip</button>
+        <div class="toolbar">
+          <button id="reset-btn" class="btn-secondary"><i data-lucide="arrow-left"></i> New Trip</button>
+          <div class="toolbar-actions">
+            <button id="copy-btn" class="btn-secondary"><i data-lucide="link"></i> Copy Link</button>
+            <button id="print-btn" class="btn-secondary" style="background:var(--accent-primary); border:none;"><i data-lucide="printer"></i> Export PDF</button>
+          </div>
+        </div>
         
         <div class="itinerary-header">
           <h2 id="res-title" class="hero-title" style="font-size: 2.5rem; margin-bottom: 1rem;"></h2>
           <p id="res-summary" class="hero-subtitle"></p>
           <div class="itinerary-stats">
-            <div class="stat-badge"><i data-lucide="calendar" aria-hidden="true"></i> <span id="res-days"></span></div>
-            <div class="stat-badge"><i data-lucide="wallet" aria-hidden="true"></i> <span id="res-budget"></span></div>
-            <div class="stat-badge" id="res-cost-badge" style="display:none;"><i data-lucide="dollar-sign" aria-hidden="true"></i> <span id="res-cost"></span></div>
+            <div class="stat-badge"><i data-lucide="calendar"></i> <span id="res-days"></span></div>
+            <div class="stat-badge"><i data-lucide="wallet"></i> <span id="res-budget"></span></div>
+            <div class="stat-badge" id="weather-badge" style="display:none;"><i data-lucide="thermometer"></i> <span id="res-weather"></span></div>
           </div>
         </div>
 
-        <div id="tips-container" class="glass-card" style="margin-bottom: 3rem; padding: 1.5rem 2.5rem; display:none;">
-          <h3 style="margin-bottom: 1rem; color: var(--accent-primary); display: flex; align-items:center; gap:0.5rem;"><i data-lucide="sparkles" aria-hidden="true"></i> Local Insights</h3>
+        <div id="tips-container" class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem 2.5rem; display:none;">
+          <h3 style="margin-bottom: 1rem; color: var(--accent-primary); display: flex; align-items:center; gap:0.5rem;"><i data-lucide="map"></i> Multi-City Routing & Logistics</h3>
+          <p id="res-transit" style="color: var(--text-muted); margin-bottom:1rem;"></p>
           <ul id="res-tips" style="padding-left: 1.5rem; color: var(--text-muted);"></ul>
         </div>
 
@@ -181,6 +186,29 @@
   <script>
     lucide.createIcons();
 
+    // Check for shared trip URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const sharedTripId = urlParams.get('trip');
+    if (sharedTripId) {
+      loadSharedTrip(sharedTripId);
+    }
+
+    async function loadSharedTrip(tripId) {
+      document.getElementById('form-container').style.display = 'none';
+      document.getElementById('loading-overlay').style.display = 'block';
+      try {
+        const res = await fetch(`/api/v1/trip/${tripId}`);
+        if(!res.ok) throw new Error("Trip not found or expired.");
+        const data = await res.json();
+        renderItinerary(data);
+        document.getElementById('loading-overlay').style.display = 'none';
+        document.getElementById('results-container').style.display = 'block';
+      } catch(err) {
+        alert(err.message);
+        window.location.href = '/';
+      }
+    }
+
     document.getElementById('trip-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -189,7 +217,6 @@
       const errorBox = document.getElementById('error-box');
       const submitBtn = document.getElementById('submit-btn');
       
-      // Accessibility: Set busy state
       document.getElementById('trip-form').setAttribute('aria-busy', 'true');
       btnText.style.display = 'none';
       spinner.style.display = 'block';
@@ -217,8 +244,10 @@
         }
 
         const itinerary = await res.json();
-        renderItinerary(itinerary);
+        // Update URL to shareable link without reloading
+        window.history.pushState({}, '', `?trip=${itinerary.shareable_id}`);
         
+        renderItinerary(itinerary);
         document.getElementById('form-container').style.display = 'none';
         document.getElementById('results-container').style.display = 'block';
       } catch (err) {
@@ -233,11 +262,25 @@
     });
 
     document.getElementById('reset-btn').addEventListener('click', () => {
+      window.history.pushState({}, '', '/');
       document.getElementById('results-container').style.display = 'none';
       document.getElementById('form-container').style.display = 'block';
       document.getElementById('days-container').innerHTML = '';
-      // Return focus to destination input for accessibility
-      document.getElementById('destination').focus();
+    });
+
+    document.getElementById('print-btn').addEventListener('click', () => {
+      window.print();
+    });
+
+    document.getElementById('copy-btn').addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href);
+      const btn = document.getElementById('copy-btn');
+      btn.innerHTML = '<i data-lucide="check"></i> Copied!';
+      lucide.createIcons();
+      setTimeout(() => {
+        btn.innerHTML = '<i data-lucide="link"></i> Copy Link';
+        lucide.createIcons();
+      }, 2000);
     });
 
     function renderItinerary(data) {
@@ -246,24 +289,30 @@
       document.getElementById('res-days').textContent = data.total_days + ' Days';
       document.getElementById('res-budget').textContent = data.budget_level;
       
-      if(data.estimated_total_cost) {
-        document.getElementById('res-cost-badge').style.display = 'flex';
-        document.getElementById('res-cost').textContent = data.estimated_total_cost;
+      if(data.current_weather) {
+        document.getElementById('weather-badge').style.display = 'flex';
+        document.getElementById('res-weather').textContent = `${data.current_weather.temperature}°C (Live)`;
+      } else {
+        document.getElementById('weather-badge').style.display = 'none';
       }
 
       const tipsList = document.getElementById('res-tips');
       tipsList.innerHTML = '';
-      if(data.local_tips && data.local_tips.length > 0) {
+      if(data.local_tips || data.transit_logic) {
         document.getElementById('tips-container').style.display = 'block';
-        data.local_tips.forEach(tip => {
-          const li = document.createElement('li');
-          li.style.marginBottom = '0.5rem';
-          li.textContent = tip;
-          tipsList.appendChild(li);
-        });
+        document.getElementById('res-transit').textContent = data.transit_logic || 'Standard local routing.';
+        if(data.local_tips) {
+            data.local_tips.forEach(tip => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '0.5rem';
+            li.textContent = tip;
+            tipsList.appendChild(li);
+            });
+        }
       }
 
       const daysContainer = document.getElementById('days-container');
+      daysContainer.innerHTML = '';
       data.itinerary.forEach(day => {
         let actsHtml = day.activities.map(act => `
           <div class="activity-item">
@@ -274,11 +323,7 @@
               <div class="activity-meta">
                 ${act.location ? `<span class="meta-item"><i data-lucide="map-pin"></i> ${act.location}</span>` : ''}
                 ${act.estimated_cost ? `<span class="meta-item"><i data-lucide="dollar-sign"></i> ${act.estimated_cost}</span>` : ''}
-                ${act.google_maps_search_url ? `
-                  <!-- (Google Services) Deep link into Google Maps -->
-                  <a href="${act.google_maps_search_url}" target="_blank" rel="noopener noreferrer" class="meta-item" aria-label="View ${act.title} on Google Maps">
-                    <i data-lucide="map"></i> Map
-                  </a>` : ''}
+                ${act.google_maps_search_url ? `<a href="${act.google_maps_search_url}" target="_blank" class="meta-item"><i data-lucide="map"></i> Map</a>` : ''}
               </div>
             </div>
           </div>
@@ -287,8 +332,9 @@
         daysContainer.innerHTML += `
           <div class="day-card">
             <div class="day-header">
-              <div class="day-number" aria-label="Day ${day.day}">${day.day}</div>
+              <div class="day-number">${day.day}</div>
               <h3 class="day-theme">${day.theme}</h3>
+              ${day.city ? `<span class="day-city">${day.city}</span>` : ''}
             </div>
             <div>${actsHtml}</div>
           </div>
