@@ -120,6 +120,7 @@ class OdysseyHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def do_GET(self) -> None:
+        """(Security) Strict routing to prevent Path Traversal and Sensitive File Exposure."""
         if self.path.startswith('/api/v1/trip/'):
             trip_id = self.path.split('/')[-1]
             conn = sqlite3.connect('odyssey.db')
@@ -135,8 +136,11 @@ class OdysseyHandler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(row[0].encode('utf-8'))
             else:
                 self._send_error_response(404, "Trip not found in database.")
-        else:
+        elif self.path == '/' or self.path == '/index.html':
+            self.path = '/index.html'
             super().do_GET()
+        else:
+            self.send_error(403, "Forbidden: Access is denied.")
 
     def do_POST(self) -> None:
         if self.path == '/api/v1/plan':

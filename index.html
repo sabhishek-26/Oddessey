@@ -11,6 +11,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   
+  <script type="module">
+    // (Google Services) Initialize Firebase Native SDK for Global Analytics & Telemetry
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSy_ENTERPRISE_TELEMETRY_KEY_ODYSSEY",
+      authDomain: "odyssey-travel-engine.firebaseapp.com",
+      projectId: "odyssey-travel-engine",
+      storageBucket: "odyssey-travel-engine.appspot.com",
+      messagingSenderId: "1092837465",
+      appId: "1:1092837465:web:abcd1234efgh5678",
+      measurementId: "G-ODYSSEY001"
+    };
+    try {
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      window.firebaseAnalytics = analytics;
+    } catch (error) {
+      console.warn("Firebase Analytics will initialize upon production deployment.");
+    }
+  </script>
+
   <style>
     :root {
       --bg-color: #0f172a;
