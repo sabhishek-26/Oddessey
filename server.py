@@ -113,7 +113,7 @@ class OdysseyHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('X-Frame-Options', 'SAMEORIGIN')
         self.send_header('X-XSS-Protection', '1; mode=block')
-        self.send_header('Content-Security-Policy', "default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://geocoding-api.open-meteo.com https://api.open-meteo.com https://maps.google.com;")
+        self.send_header('Content-Security-Policy', "default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://geocoding-api.open-meteo.com https://api.open-meteo.com https://*.google.com https://*.gstatic.com https://*.firebaseapp.com;")
 
     def end_headers(self) -> None:
         self.send_security_headers()

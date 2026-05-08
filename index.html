@@ -539,12 +539,11 @@
             <div class="activity-content">
               <h4 class="activity-title">${act.title}</h4>
               <p class="activity-desc">${act.description}</p>
-              <div class="activity-meta" style="margin-bottom:1rem;">
+              <div class="activity-meta">
                 ${act.location ? `<span class="meta-item"><i data-lucide="map-pin"></i> ${act.location}</span>` : ''}
                 ${act.estimated_cost ? `<span class="meta-item"><i data-lucide="dollar-sign"></i> ${act.estimated_cost}</span>` : ''}
                 ${act.google_maps_search_url ? `<a href="${act.google_maps_search_url}" target="_blank" class="meta-item"><i data-lucide="external-link"></i> Directions</a>` : ''}
               </div>
-              ${act.location ? `<iframe width="100%" height="150" style="border:0; border-radius:8px; opacity:0.8; transition:opacity 0.3s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8" src="https://maps.google.com/maps?q=${encodeURIComponent(act.location + ' ' + day.city)}&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>` : ''}
             </div>
           </div>
         `).join('');
