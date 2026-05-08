@@ -8,92 +8,257 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <style>
     :root {
       --bg-color: #0f172a;
-      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-      --surface-color: rgba(30, 41, 59, 0.7);
-      --surface-border: rgba(255, 255, 255, 0.1);
+      --bg-gradient: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+      --surface-color: rgba(30, 41, 59, 0.4);
+      --surface-border: rgba(255, 255, 255, 0.08);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent-primary: #8b5cf6;
-      --accent-secondary: #ec4899;
-      --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-      --focus-ring: 0 0 0 3px rgba(139, 92, 246, 0.5);
+      --accent-secondary: #06b6d4;
+      --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      --focus-ring: 0 0 0 3px rgba(139, 92, 246, 0.4);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); background-attachment: fixed; color: var(--text-main); min-height: 100vh; line-height: 1.6; }
-    .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+    body { 
+      font-family: 'Outfit', sans-serif; 
+      background: var(--bg-gradient); 
+      background-attachment: fixed; 
+      color: var(--text-main); 
+      min-height: 100vh; 
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Dynamic Animated Background Blobs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      width: 60vw;
+      height: 60vw;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -1;
+      animation: float 20s infinite ease-in-out alternate;
+      pointer-events: none;
+    }
+    body::before {
+      top: -20%; left: -10%;
+      background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, rgba(0,0,0,0) 70%);
+    }
+    body::after {
+      bottom: -20%; right: -10%;
+      background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, rgba(0,0,0,0) 70%);
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(10%, 10%) scale(1.1); }
+    }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
 
-    header { text-align: center; padding: 4rem 0 3rem; animation: fadeIn 0.6s ease-out forwards; }
-    .hero-title { font-size: 3.5rem; margin-bottom: 1rem; letter-spacing: -0.02em; font-weight: 700; }
-    .hero-subtitle { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+    header { text-align: center; padding: 4rem 0 3rem; animation: slideDownFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .hero-title { font-size: 4rem; margin-bottom: 1rem; letter-spacing: -0.03em; font-weight: 700; line-height: 1.1; }
+    .hero-subtitle { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; font-weight: 300; }
     .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-    .glass-card { background: var(--surface-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--surface-border); border-radius: 16px; padding: 2.5rem; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); animation: fadeIn 0.6s ease-out forwards; }
+    .glass-card { 
+      background: var(--surface-color); 
+      backdrop-filter: blur(24px); 
+      -webkit-backdrop-filter: blur(24px); 
+      border: 1px solid var(--surface-border); 
+      border-radius: 20px; 
+      padding: 2.5rem; 
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+      animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    }
 
-    .form-group { margin-bottom: 1.5rem; }
-    .form-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 500; margin-bottom: 0.5rem; color: #e2e8f0; }
-    .form-input, .form-select, .form-textarea { width: 100%; background: rgba(15, 23, 42, 0.5); border: 1px solid var(--surface-border); color: var(--text-main); padding: 0.875rem 1rem; border-radius: 8px; font-family: inherit; font-size: 1rem; transition: all 0.2s; }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent-primary); box-shadow: var(--focus-ring); }
-    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-group { margin-bottom: 1.8rem; position: relative; }
+    .form-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 500; margin-bottom: 0.6rem; color: #cbd5e1; transition: color 0.3s; }
+    
+    .form-group:focus-within .form-label { color: var(--accent-secondary); }
+
+    .form-input, .form-select, .form-textarea { 
+      width: 100%; 
+      background: rgba(15, 23, 42, 0.6); 
+      border: 1px solid var(--surface-border); 
+      color: var(--text-main); 
+      padding: 1rem 1.2rem; 
+      border-radius: 12px; 
+      font-family: inherit; 
+      font-size: 1.05rem; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .form-input:hover, .form-select:hover, .form-textarea:hover { background: rgba(30, 41, 59, 0.8); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { 
+      outline: none; 
+      border-color: var(--accent-secondary); 
+      box-shadow: var(--focus-ring); 
+      background: rgba(15, 23, 42, 0.9);
+      transform: translateY(-2px);
+    }
+    .form-textarea { resize: vertical; min-height: 120px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
-    .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; background: var(--accent-gradient); color: white; border: none; padding: 1rem 1.5rem; font-size: 1.1rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
-    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3); }
+    .btn-primary { 
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; 
+      width: 100%; 
+      background: var(--accent-gradient); 
+      color: white; 
+      border: none; 
+      padding: 1.2rem 2rem; 
+      font-size: 1.1rem; 
+      font-weight: 600; 
+      border-radius: 12px; 
+      cursor: pointer; 
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s ease;
+    }
+    .btn-primary:hover:not(:disabled) { 
+      transform: translateY(-4px) scale(1.01); 
+      box-shadow: 0 15px 30px rgba(6, 182, 212, 0.4); 
+    }
+    .btn-primary:hover:not(:disabled)::after { left: 100%; }
     .btn-primary:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; filter: grayscale(50%); }
 
-    .btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid var(--surface-border); color: white; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; font-weight: 500; transition: background 0.2s; }
-    .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+    .btn-secondary { 
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
+      color: white; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; 
+      display: flex; align-items: center; gap: 0.5rem; font-weight: 500; 
+      transition: all 0.3s; 
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
 
-    .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    /* Dynamic Loading Overlay */
+    #loading-overlay { display: none; text-align: center; padding: 6rem 0; animation: fadeIn 0.4s forwards; }
+    .loader-orb {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--accent-gradient);
+      margin: 0 auto 2rem;
+      animation: pulseOrb 1.5s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+    }
+    @keyframes pulseOrb {
+      0% { transform: scale(0.8); opacity: 0.7; box-shadow: 0 0 20px rgba(6,182,212,0.4); }
+      100% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 40px rgba(139,92,246,0.8); }
+    }
+    #loading-text-dynamic { font-size: 1.25rem; font-weight: 300; color: var(--text-muted); animation: pulseText 2s infinite alternate; }
 
-    #results-container { display: none; opacity: 0; animation: fadeIn 0.6s ease-out forwards; }
-    .itinerary-header { text-align: center; margin-bottom: 3rem; }
-    .itinerary-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
-    .stat-badge { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.95rem; font-weight: 500; color: #d8b4fe; display: flex; align-items: center; gap: 0.5rem; }
+    #results-container { display: none; opacity: 0; animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .itinerary-header { text-align: center; margin-bottom: 3.5rem; }
+    .itinerary-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .stat-badge { 
+      background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); 
+      padding: 0.6rem 1.2rem; border-radius: 30px; font-size: 0.95rem; font-weight: 500; 
+      color: #e2e8f0; display: flex; align-items: center; gap: 0.5rem; 
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    .stat-badge:hover { background: rgba(139, 92, 246, 0.2); transform: translateY(-2px); }
 
-    .day-card { background: var(--surface-color); border: 1px solid var(--surface-border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; transition: transform 0.3s; page-break-inside: avoid; }
-    .day-card:hover { transform: translateX(5px); border-color: rgba(139, 92, 246, 0.5); }
-    .day-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--surface-border); }
-    .day-number { background: var(--accent-gradient); color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 1.2rem; }
-    .day-theme { font-size: 1.25rem; font-weight: 600; flex-grow:1; }
-    .day-city { color: var(--accent-secondary); font-size: 0.9rem; border: 1px solid var(--accent-secondary); padding: 0.2rem 0.6rem; border-radius: 12px;}
+    /* Staggered Day Cards */
+    .day-card { 
+      background: linear-gradient(145deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.6) 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--surface-border); 
+      border-radius: 16px; padding: 2.5rem; margin-bottom: 2rem; 
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+      page-break-inside: avoid; 
+      opacity: 0; /* Base state for stagger animation applied via JS */
+      transform: translateY(30px);
+    }
+    .day-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .day-card:hover { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
     
-    .activity-item { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
-    .activity-time { min-width: 90px; font-weight: 600; color: var(--accent-secondary); font-size: 0.95rem; }
-    .activity-content { background: rgba(15, 23, 42, 0.4); padding: 1.5rem; border-radius: 8px; flex-grow: 1; border: 1px solid transparent; transition: border-color 0.2s; }
-    .activity-title { font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 600; }
-    .activity-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5;}
-    .activity-meta { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem; color: #e2e8f0; }
-    .meta-item { display: flex; align-items: center; gap: 0.4rem; background: rgba(255, 255, 255, 0.08); padding: 0.35rem 0.6rem; border-radius: 6px; text-decoration: none; color: inherit; transition: background 0.2s;}
-    a.meta-item:hover { background: rgba(139, 92, 246, 0.2); color: white; }
+    .day-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .day-number { 
+      background: var(--accent-gradient); color: white; width: 48px; height: 48px; 
+      display: flex; align-items: center; justify-content: center; border-radius: 14px; 
+      font-weight: 700; font-size: 1.4rem; box-shadow: 0 5px 15px rgba(139,92,246,0.3);
+    }
+    .day-theme { font-size: 1.4rem; font-weight: 600; flex-grow:1; letter-spacing: -0.01em; }
+    .day-city { color: #a5f3fc; font-size: 0.85rem; font-weight: 600; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3); padding: 0.3rem 0.8rem; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em;}
+    
+    .activity-item { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; position: relative; }
+    /* Timeline connector */
+    .activity-item:not(:last-child)::after {
+      content: ''; position: absolute; left: 115px; top: 30px; bottom: -30px;
+      width: 2px; background: rgba(255,255,255,0.05);
+    }
+    .activity-time { min-width: 90px; font-weight: 700; color: #a5f3fc; font-size: 1rem; padding-top: 0.2rem; }
+    .activity-content { 
+      background: rgba(2, 6, 23, 0.4); padding: 1.8rem; border-radius: 12px; flex-grow: 1; 
+      border: 1px solid transparent; transition: all 0.3s; 
+    }
+    .activity-item:hover .activity-content { background: rgba(2, 6, 23, 0.7); border-color: rgba(255,255,255,0.1); transform: translateX(5px); }
+    .activity-title { font-size: 1.2rem; margin-bottom: 0.6rem; font-weight: 600; }
+    .activity-desc { color: var(--text-muted); font-size: 1rem; margin-bottom: 1.2rem; line-height: 1.6; font-weight: 300;}
+    
+    .activity-meta { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem; color: #cbd5e1; }
+    .meta-item { 
+      display: flex; align-items: center; gap: 0.4rem; background: rgba(255, 255, 255, 0.05); 
+      padding: 0.4rem 0.8rem; border-radius: 8px; text-decoration: none; color: inherit; 
+      transition: all 0.3s; font-weight: 500; border: 1px solid rgba(255,255,255,0.02);
+    }
+    a.meta-item { color: #8b5cf6; background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.2); }
+    a.meta-item:hover { background: var(--accent-gradient); color: white; border-color: transparent; box-shadow: 0 5px 15px rgba(139,92,246,0.3); transform: translateY(-2px); }
 
-    .error-msg { display: none; color: #fca5a5; margin-bottom: 1rem; padding: 1rem; background: rgba(239, 68, 68, 0.15); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 500;}
-    .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    /* Toast Notification */
+    .toast {
+      position: fixed; bottom: 30px; right: 30px;
+      background: rgba(15,23,42,0.9); backdrop-filter: blur(12px);
+      border: 1px solid var(--accent-secondary); padding: 1rem 1.5rem; border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex; align-items: center; gap: 0.8rem; font-weight: 500;
+      transform: translateY(100px) scale(0.9); opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    .toast.show { transform: translateY(0) scale(1); opacity: 1; }
+
+    /* Animations */
+    @keyframes slideDownFade { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUpFade { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes pulseText { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+    .error-msg { display: none; color: #fca5a5; margin-bottom: 1.5rem; padding: 1.2rem; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3); font-weight: 500; animation: scaleIn 0.3s;}
+    .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; position: sticky; top: 1rem; z-index: 100; }
     .toolbar-actions { display: flex; gap: 1rem; }
 
-    /* Print Styles (Export to PDF) */
+    /* Print Styles */
     @media print {
-      body { background: white; color: black; font-size: 12pt; }
+      body { background: white; color: black; font-family: sans-serif; }
       .container { max-width: 100%; padding: 0; }
-      .glass-card, .day-card { background: none; border: 1px solid #ccc; box-shadow: none; color: black; }
+      .glass-card, .day-card { background: none; border: 1px solid #ddd; box-shadow: none; color: black; transform: none !important; opacity: 1 !important; margin-bottom: 1cm;}
       .gradient-text { background: none; color: black; -webkit-text-fill-color: black; }
-      .hero-subtitle, .activity-desc, .stat-badge { color: #333; }
-      .stat-badge { border-color: #999; background: #f0f0f0; }
+      .hero-subtitle, .activity-desc, .stat-badge, .activity-time { color: #333; }
+      .stat-badge { border-color: #999; background: #f9f9f9; }
       .activity-content { background: #fafafa; border: 1px solid #eee; }
       .meta-item, .day-city { color: #555; background: none; border: 1px solid #ccc; }
       .day-number { background: #333; color: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .toolbar, button, a.meta-item i { display: none !important; }
+      .toolbar, button, a.meta-item i, body::before, body::after { display: none !important; }
+      .activity-item::after { display: none; }
       @page { margin: 1cm; }
     }
   </style>
@@ -102,20 +267,21 @@
   <div class="container">
     <header>
       <h1 class="hero-title"><span class="gradient-text">Odyssey</span></h1>
-      <p class="hero-subtitle">Design your ultimate journey. Powered by Google AI.</p>
+      <p class="hero-subtitle">Design your ultimate multi-city journey. Powered by Google AI.</p>
     </header>
 
     <main>
-      <div id="loading-overlay" style="display:none; text-align:center; padding: 4rem;">
-        <div class="spinner" style="display:inline-block; border-top-color:var(--accent-primary); width:40px; height:40px; margin-bottom:1rem;"></div>
-        <h2>Loading your unique itinerary...</h2>
+      <div id="loading-overlay" aria-live="polite">
+        <div class="loader-orb"></div>
+        <h2 style="margin-bottom: 0.5rem; font-weight: 500;">Designing Your Journey</h2>
+        <div id="loading-text-dynamic">Initializing neural engine...</div>
       </div>
 
       <div id="form-container" class="glass-card">
         <form id="trip-form" aria-label="Trip planning form">
           <div class="form-group">
             <label for="destination" class="form-label"><i data-lucide="map"></i> Destination(s)</label>
-            <input required id="destination" type="text" class="form-input" placeholder="e.g. Kyoto, or Rome to Paris to London" aria-required="true" />
+            <input required id="destination" type="text" class="form-input" placeholder="e.g. Kyoto, Japan or Rome to Paris to London" aria-required="true" />
           </div>
 
           <div class="grid-2">
@@ -140,42 +306,41 @@
 
           <div class="form-group">
             <label for="interests" class="form-label"><i data-lucide="sparkles"></i> Interests & Constraints</label>
-            <textarea id="interests" class="form-textarea" placeholder="e.g. History buffs, must visit the Louvre, vegetarian food only..."></textarea>
+            <textarea id="interests" class="form-textarea" placeholder="e.g. Art history buffs, must visit the Louvre, vegetarian food only, prefer relaxed mornings..."></textarea>
           </div>
 
           <div id="error-box" class="error-msg" aria-live="assertive" role="alert"></div>
 
           <button type="submit" id="submit-btn" class="btn-primary" aria-label="Generate Itinerary">
             <span id="btn-text" style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="navigation"></i> Generate Magic Route</span>
-            <div id="spinner" class="spinner" aria-hidden="true"></div>
-            <span id="loading-text" class="sr-only">Processing...</span>
           </button>
         </form>
       </div>
 
       <div id="results-container" aria-live="polite">
-        <div class="toolbar">
+        <div class="toolbar glass-card" style="padding: 1rem 1.5rem; border-radius: 16px; margin-bottom: 2rem;">
           <button id="reset-btn" class="btn-secondary"><i data-lucide="arrow-left"></i> New Trip</button>
           <div class="toolbar-actions">
-            <button id="copy-btn" class="btn-secondary"><i data-lucide="link"></i> Copy Link</button>
-            <button id="print-btn" class="btn-secondary" style="background:var(--accent-primary); border:none;"><i data-lucide="printer"></i> Export PDF</button>
+            <button id="copy-btn" class="btn-secondary"><i data-lucide="share-2"></i> Share Link</button>
+            <button id="print-btn" class="btn-secondary" style="background:rgba(139, 92, 246, 0.2); border-color:rgba(139, 92, 246, 0.5);"><i data-lucide="printer"></i> Export PDF</button>
           </div>
         </div>
         
         <div class="itinerary-header">
-          <h2 id="res-title" class="hero-title" style="font-size: 2.5rem; margin-bottom: 1rem;"></h2>
-          <p id="res-summary" class="hero-subtitle"></p>
+          <h2 id="res-title" class="hero-title" style="font-size: 3rem; margin-bottom: 1rem;"></h2>
+          <p id="res-summary" class="hero-subtitle" style="font-size: 1.1rem; line-height: 1.8;"></p>
           <div class="itinerary-stats">
             <div class="stat-badge"><i data-lucide="calendar"></i> <span id="res-days"></span></div>
+            <div class="stat-badge"><i data-lucide="users"></i> <span id="res-travelers"></span></div>
             <div class="stat-badge"><i data-lucide="wallet"></i> <span id="res-budget"></span></div>
-            <div class="stat-badge" id="weather-badge" style="display:none;"><i data-lucide="thermometer"></i> <span id="res-weather"></span></div>
+            <div class="stat-badge" id="weather-badge" style="display:none; border-color: rgba(6,182,212,0.4);"><i data-lucide="cloud-sun" style="color:#06b6d4;"></i> <span id="res-weather"></span></div>
           </div>
         </div>
 
-        <div id="tips-container" class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem 2.5rem; display:none;">
-          <h3 style="margin-bottom: 1rem; color: var(--accent-primary); display: flex; align-items:center; gap:0.5rem;"><i data-lucide="map"></i> Multi-City Routing & Logistics</h3>
-          <p id="res-transit" style="color: var(--text-muted); margin-bottom:1rem;"></p>
-          <ul id="res-tips" style="padding-left: 1.5rem; color: var(--text-muted);"></ul>
+        <div id="tips-container" class="glass-card" style="margin-bottom: 3rem; padding: 2rem; display:none;">
+          <h3 style="margin-bottom: 1.2rem; color: #a5f3fc; display: flex; align-items:center; gap:0.6rem; font-weight:600;"><i data-lucide="route"></i> Multi-City Logistics & Pro Tips</h3>
+          <p id="res-transit" style="color: var(--text-main); margin-bottom:1.5rem; font-size:1.05rem;"></p>
+          <ul id="res-tips" style="padding-left: 1.5rem; color: var(--text-muted); font-weight:300;"></ul>
         </div>
 
         <div id="days-container"></div>
@@ -183,8 +348,23 @@
     </main>
   </div>
 
+  <div id="toast" class="toast">
+    <i data-lucide="check-circle" style="color:#10b981;"></i>
+    <span>Shareable link copied to clipboard!</span>
+  </div>
+
   <script>
     lucide.createIcons();
+
+    const loadingPhrases = [
+      "Analyzing meteorological patterns...",
+      "Geocoding primary destinations...",
+      "Routing optimal transit paths...",
+      "Curating hidden local gems...",
+      "Calculating budget logistics...",
+      "Formatting final itinerary..."
+    ];
+    let loaderInterval;
 
     // Check for shared trip URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -193,15 +373,41 @@
       loadSharedTrip(sharedTripId);
     }
 
-    async function loadSharedTrip(tripId) {
+    function startDynamicLoader() {
       document.getElementById('form-container').style.display = 'none';
       document.getElementById('loading-overlay').style.display = 'block';
+      const textNode = document.getElementById('loading-text-dynamic');
+      let i = 0;
+      textNode.innerText = loadingPhrases[0];
+      loaderInterval = setInterval(() => {
+        i = (i + 1) % loadingPhrases.length;
+        textNode.style.opacity = 0;
+        setTimeout(() => {
+          textNode.innerText = loadingPhrases[i];
+          textNode.style.opacity = 1;
+        }, 300);
+      }, 2500);
+    }
+
+    function stopDynamicLoader() {
+      clearInterval(loaderInterval);
+      document.getElementById('loading-overlay').style.display = 'none';
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    async function loadSharedTrip(tripId) {
+      startDynamicLoader();
       try {
         const res = await fetch(`/api/v1/trip/${tripId}`);
         if(!res.ok) throw new Error("Trip not found or expired.");
         const data = await res.json();
         renderItinerary(data);
-        document.getElementById('loading-overlay').style.display = 'none';
+        stopDynamicLoader();
         document.getElementById('results-container').style.display = 'block';
       } catch(err) {
         alert(err.message);
@@ -212,24 +418,20 @@
     document.getElementById('trip-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const btnText = document.getElementById('btn-text');
-      const spinner = document.getElementById('spinner');
       const errorBox = document.getElementById('error-box');
-      const submitBtn = document.getElementById('submit-btn');
-      
-      document.getElementById('trip-form').setAttribute('aria-busy', 'true');
-      btnText.style.display = 'none';
-      spinner.style.display = 'block';
-      submitBtn.disabled = true;
       errorBox.style.display = 'none';
+
+      const travelersVal = document.getElementById('travelers').value;
 
       const data = {
         destination: document.getElementById('destination').value,
         days: parseInt(document.getElementById('days').value),
-        travelers: parseInt(document.getElementById('travelers').value),
+        travelers: parseInt(travelersVal),
         budget: document.getElementById('budget').value,
         interests: document.getElementById('interests').value
       };
+
+      startDynamicLoader();
 
       try {
         const res = await fetch('/api/v1/plan', {
@@ -244,20 +446,18 @@
         }
 
         const itinerary = await res.json();
-        // Update URL to shareable link without reloading
+        itinerary._travelers = travelersVal; // Temp inject for display
+        
         window.history.pushState({}, '', `?trip=${itinerary.shareable_id}`);
         
         renderItinerary(itinerary);
-        document.getElementById('form-container').style.display = 'none';
+        stopDynamicLoader();
         document.getElementById('results-container').style.display = 'block';
       } catch (err) {
+        stopDynamicLoader();
+        document.getElementById('form-container').style.display = 'block';
         errorBox.textContent = err.message;
         errorBox.style.display = 'block';
-      } finally {
-        document.getElementById('trip-form').setAttribute('aria-busy', 'false');
-        btnText.style.display = 'flex';
-        spinner.style.display = 'none';
-        submitBtn.disabled = false;
       }
     });
 
@@ -266,6 +466,7 @@
       document.getElementById('results-container').style.display = 'none';
       document.getElementById('form-container').style.display = 'block';
       document.getElementById('days-container').innerHTML = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     document.getElementById('print-btn').addEventListener('click', () => {
@@ -274,13 +475,7 @@
 
     document.getElementById('copy-btn').addEventListener('click', () => {
       navigator.clipboard.writeText(window.location.href);
-      const btn = document.getElementById('copy-btn');
-      btn.innerHTML = '<i data-lucide="check"></i> Copied!';
-      lucide.createIcons();
-      setTimeout(() => {
-        btn.innerHTML = '<i data-lucide="link"></i> Copy Link';
-        lucide.createIcons();
-      }, 2000);
+      showToast();
     });
 
     function renderItinerary(data) {
@@ -288,6 +483,7 @@
       document.getElementById('res-summary').textContent = data.summary;
       document.getElementById('res-days').textContent = data.total_days + ' Days';
       document.getElementById('res-budget').textContent = data.budget_level;
+      document.getElementById('res-travelers').textContent = (data._travelers || '2') + ' Travelers';
       
       if(data.current_weather) {
         document.getElementById('weather-badge').style.display = 'flex';
@@ -300,11 +496,11 @@
       tipsList.innerHTML = '';
       if(data.local_tips || data.transit_logic) {
         document.getElementById('tips-container').style.display = 'block';
-        document.getElementById('res-transit').textContent = data.transit_logic || 'Standard local routing.';
+        document.getElementById('res-transit').textContent = data.transit_logic || 'Standard local routing applies.';
         if(data.local_tips) {
             data.local_tips.forEach(tip => {
             const li = document.createElement('li');
-            li.style.marginBottom = '0.5rem';
+            li.style.marginBottom = '0.8rem';
             li.textContent = tip;
             tipsList.appendChild(li);
             });
@@ -313,7 +509,8 @@
 
       const daysContainer = document.getElementById('days-container');
       daysContainer.innerHTML = '';
-      data.itinerary.forEach(day => {
+      
+      data.itinerary.forEach((day, index) => {
         let actsHtml = day.activities.map(act => `
           <div class="activity-item">
             <div class="activity-time">${act.time}</div>
@@ -323,22 +520,31 @@
               <div class="activity-meta">
                 ${act.location ? `<span class="meta-item"><i data-lucide="map-pin"></i> ${act.location}</span>` : ''}
                 ${act.estimated_cost ? `<span class="meta-item"><i data-lucide="dollar-sign"></i> ${act.estimated_cost}</span>` : ''}
-                ${act.google_maps_search_url ? `<a href="${act.google_maps_search_url}" target="_blank" class="meta-item"><i data-lucide="map"></i> Map</a>` : ''}
+                ${act.google_maps_search_url ? `<a href="${act.google_maps_search_url}" target="_blank" class="meta-item"><i data-lucide="external-link"></i> Map</a>` : ''}
               </div>
             </div>
           </div>
         `).join('');
 
-        daysContainer.innerHTML += `
-          <div class="day-card">
-            <div class="day-header">
-              <div class="day-number">${day.day}</div>
-              <h3 class="day-theme">${day.theme}</h3>
-              ${day.city ? `<span class="day-city">${day.city}</span>` : ''}
-            </div>
-            <div>${actsHtml}</div>
+        const card = document.createElement('div');
+        card.className = 'day-card';
+        // Staggered animation delay
+        card.style.transitionDelay = `${index * 0.1}s`;
+        
+        card.innerHTML = `
+          <div class="day-header">
+            <div class="day-number">${day.day}</div>
+            <h3 class="day-theme">${day.theme}</h3>
+            ${day.city ? `<span class="day-city">${day.city}</span>` : ''}
           </div>
+          <div>${actsHtml}</div>
         `;
+        daysContainer.appendChild(card);
+        
+        // Trigger reflow and add visible class for stagger animation
+        setTimeout(() => {
+          card.classList.add('visible');
+        }, 50);
       });
       lucide.createIcons();
     }

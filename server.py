@@ -8,6 +8,7 @@ import urllib.parse
 import logging
 import sqlite3
 import uuid
+import time
 from functools import lru_cache
 from typing import Dict, Any, Optional
 
@@ -48,7 +49,7 @@ def get_weather(destination: str) -> Optional[Dict[str, Any]]:
         first_city = destination.split(',')[0].split(' to ')[0].strip()
         geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={urllib.parse.quote(first_city)}&count=1"
         geo_req = urllib.request.Request(geo_url, headers={'User-Agent': 'Odyssey'})
-        with urllib.request.urlopen(geo_req, timeout=3) as response:
+        with urllib.request.urlopen(geo_req, timeout=5) as response:
             geo_data = json.loads(response.read().decode('utf-8'))
             if not geo_data.get('results'):
                 return None
@@ -56,7 +57,7 @@ def get_weather(destination: str) -> Optional[Dict[str, Any]]:
             
         weather_url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
         w_req = urllib.request.Request(weather_url, headers={'User-Agent': 'Odyssey'})
-        with urllib.request.urlopen(w_req, timeout=3) as w_response:
+        with urllib.request.urlopen(w_req, timeout=5) as w_response:
             w_data = json.loads(w_response.read().decode('utf-8'))
             return w_data.get('current_weather')
     except Exception as e:
@@ -80,22 +81,31 @@ def call_gemini_api(prompt: str) -> Dict[str, Any]:
     
     req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'}, method='POST')
     
-    try:
-        with urllib.request.urlopen(req) as response:
-            result = json.loads(response.read().decode('utf-8'))
-            ai_text = result['candidates'][0]['content']['parts'][0]['text'].strip()
-            
-            if ai_text.startswith("```json"): ai_text = ai_text[7:]
-            elif ai_text.startswith("```"): ai_text = ai_text[3:]
-            if ai_text.endswith("```"): ai_text = ai_text[:-3]
-            
-            return json.loads(ai_text.strip())
-    except urllib.error.URLError as e:
-        logger.error(f"Gemini API Error: {str(e)}")
-        raise RuntimeError(f"Failed to communicate with Google Gemini AI: {str(e)}")
-    except json.JSONDecodeError as e:
-        logger.error(f"JSON Parse Error: {str(e)}")
-        raise RuntimeError("Received malformed JSON from Gemini API.")
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            with urllib.request.urlopen(req) as response:
+                result = json.loads(response.read().decode('utf-8'))
+                ai_text = result['candidates'][0]['content']['parts'][0]['text'].strip()
+                
+                if ai_text.startswith("```json"): ai_text = ai_text[7:]
+                elif ai_text.startswith("```"): ai_text = ai_text[3:]
+                if ai_text.endswith("```"): ai_text = ai_text[:-3]
+                
+                return json.loads(ai_text.strip())
+        except urllib.error.HTTPError as e:
+            if e.code in [503, 429] and attempt < max_retries - 1:
+                logger.warning(f"Google Gemini overloaded (HTTP {e.code}). Retrying in {2**attempt}s...")
+                time.sleep(2**attempt)
+                continue
+            logger.error(f"Gemini API Error: {str(e)}")
+            raise RuntimeError(f"Google AI is currently overloaded (HTTP {e.code}). Please try again in a moment.")
+        except urllib.error.URLError as e:
+            logger.error(f"Gemini API Error: {str(e)}")
+            raise RuntimeError(f"Network error while reaching Google AI: {str(e)}")
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON Parse Error: {str(e)}")
+            raise RuntimeError("Received malformed JSON from Gemini API.")
 
 class OdysseyHandler(http.server.SimpleHTTPRequestHandler):
     
