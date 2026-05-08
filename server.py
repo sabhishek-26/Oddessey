@@ -160,7 +160,7 @@ Return ONLY JSON with this structure:
         self.wfile.write(json.dumps({"detail": message}).encode('utf-8'))
 
 if __name__ == "__main__":
-    PORT = 8000
+    PORT = int(os.environ.get("PORT", 8080))
     with socketserver.TCPServer(("", PORT), OdysseyHandler) as httpd:
         logger.info(f"Odyssey Secure Server listening on port {PORT}")
         print(f"=================================================")

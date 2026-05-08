@@ -1,1 +1,7 @@
 .env
+.gemini/
+.vscode/
+.cache/
+.npm/
+__pycache__/
+*.pyc

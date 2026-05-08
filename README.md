@@ -25,6 +25,16 @@ Since the application relies on zero external dependencies, getting it running t
 3. Open your web browser and navigate to:
    **http://localhost:8000**
 
+## ☁️ Google Cloud Run Deployment
+
+Odyssey is fully configured for seamless, automated deployment to Google Cloud Run.
+
+1. **Link Repository**: Go to Google Cloud Run, click **Create Service**, and select "Continuously deploy from a repository".
+2. **Set Secrets**: Under the "Container, Connections, Security" menu, navigate to the **Variables & Secrets** tab. Add a new variable:
+   * **Name**: `GEMINI_API_KEY`
+   * **Value**: Your actual API key.
+3. **Deploy**: Cloud Run will automatically read the included `Procfile` and `requirements.txt` to instantly build and deploy the Zero-Dependency engine.
+
 ## 📂 Project Structure
 
 ```text
