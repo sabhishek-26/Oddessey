@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Odyssey - An intelligent travel design engine powered by Google Gemini AI." />
+  <title>Odyssey - Intelligent Travel Design</title>
+  
+  <!-- (Google Services) Google Fonts Integration -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --surface-color: rgba(30, 41, 59, 0.7);
+      --surface-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-primary: #8b5cf6;
+      --accent-secondary: #ec4899;
+      --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+      --focus-ring: 0 0 0 3px rgba(139, 92, 246, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+    
+    /* (Accessibility) Hidden text for screen readers only */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+
+    header { text-align: center; padding: 4rem 0 3rem; animation: fadeIn 0.6s ease-out forwards; }
+    .hero-title { font-size: 3.5rem; margin-bottom: 1rem; letter-spacing: -0.02em; font-weight: 700; }
+    .hero-subtitle { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+    .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .glass-card {
+      background: var(--surface-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--surface-border); border-radius: 16px; padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .form-group { margin-bottom: 1.5rem; }
+    .form-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 500; margin-bottom: 0.5rem; color: #e2e8f0; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; background: rgba(15, 23, 42, 0.5); border: 1px solid var(--surface-border);
+      color: var(--text-main); padding: 0.875rem 1rem; border-radius: 8px; font-family: inherit; font-size: 1rem; transition: all 0.2s;
+    }
+    /* (Accessibility) High contrast focus rings */
+    .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent-primary); box-shadow: var(--focus-ring); }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%;
+      background: var(--accent-gradient); color: white; border: none; padding: 1rem 1.5rem; font-size: 1.1rem;
+      font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s;
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3); }
+    .btn-primary:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Itinerary Results */
+    #results-container { display: none; opacity: 0; animation: fadeIn 0.6s ease-out forwards; }
+    .itinerary-header { text-align: center; margin-bottom: 3rem; }
+    .itinerary-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem; }
+    .stat-badge { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.95rem; font-weight: 500; color: #d8b4fe; display: flex; align-items: center; gap: 0.5rem; }
+
+    .day-card { background: var(--surface-color); border: 1px solid var(--surface-border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; transition: transform 0.3s; }
+    .day-card:hover { transform: translateX(5px); border-color: rgba(139, 92, 246, 0.5); }
+    .day-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--surface-border); }
+    .day-number { background: var(--accent-gradient); color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 1.2rem; }
+    .day-theme { font-size: 1.25rem; font-weight: 600; }
+    
+    .activity-item { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .activity-time { min-width: 90px; font-weight: 600; color: var(--accent-secondary); font-size: 0.95rem; }
+    .activity-content { background: rgba(15, 23, 42, 0.4); padding: 1.5rem; border-radius: 8px; flex-grow: 1; border: 1px solid transparent; transition: border-color 0.2s; }
+    .activity-content:hover { border-color: rgba(236, 72, 153, 0.3); }
+    .activity-title { font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 600; }
+    .activity-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5;}
+    .activity-meta { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem; color: #e2e8f0; }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; background: rgba(255, 255, 255, 0.08); padding: 0.35rem 0.6rem; border-radius: 6px; text-decoration: none; color: inherit; transition: background 0.2s;}
+    a.meta-item:hover { background: rgba(139, 92, 246, 0.2); color: white; }
+
+    .error-msg { display: none; color: #fca5a5; margin-bottom: 1rem; padding: 1rem; background: rgba(239, 68, 68, 0.15); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 500;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="hero-title"><span class="gradient-text">Odyssey</span></h1>
+      <p class="hero-subtitle">Design your ultimate journey. Powered by real-time Google AI.</p>
+    </header>
+
+    <main>
+      <!-- (Accessibility) Semantic form and ARIA states -->
+      <div id="form-container" class="glass-card">
+        <form id="trip-form" aria-label="Trip planning form">
+          <div class="form-group">
+            <label for="destination" class="form-label"><i data-lucide="map-pin"></i> Destination</label>
+            <input required id="destination" type="text" class="form-input" placeholder="e.g. Kyoto, Japan or Amalfi Coast" aria-required="true" />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="days" class="form-label"><i data-lucide="calendar"></i> Duration (Days)</label>
+              <input required id="days" type="number" min="1" max="30" value="3" class="form-input" aria-required="true"/>
+            </div>
+            <div class="form-group">
+              <label for="travelers" class="form-label"><i data-lucide="users"></i> Travelers</label>
+              <input required id="travelers" type="number" min="1" max="20" value="2" class="form-input" aria-required="true"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="budget" class="form-label"><i data-lucide="wallet"></i> Budget Level</label>
+            <select required id="budget" class="form-select" aria-required="true">
+              <option value="Budget">Budget - Backpacking, Hostels, Street Food</option>
+              <option value="Moderate" selected>Moderate - 3/4 Star Hotels, Good Restaurants</option>
+              <option value="Luxury">Luxury - 5 Star, Fine Dining, Private Tours</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="interests" class="form-label"><i data-lucide="sparkles"></i> Interests & Constraints</label>
+            <textarea id="interests" class="form-textarea" placeholder="e.g. Must visit art museums, vegetarian food only..."></textarea>
+          </div>
+
+          <!-- (Accessibility) aria-live for announcing errors dynamically -->
+          <div id="error-box" class="error-msg" aria-live="assertive" role="alert"></div>
+
+          <button type="submit" id="submit-btn" class="btn-primary" aria-label="Generate Itinerary">
+            <span id="btn-text" style="display:flex; align-items:center; gap:0.5rem;"><i data-lucide="navigation"></i> Generate Magic Itinerary</span>
+            <div id="spinner" class="spinner" aria-hidden="true"></div>
+            <span id="loading-text" class="sr-only">Loading, please wait...</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- (Accessibility) aria-live polite for results -->
+      <div id="results-container" aria-live="polite">
+        <button id="reset-btn" aria-label="Plan Another Trip" style="background:none; border:none; color:var(--text-muted); cursor:pointer; margin-bottom:2rem; text-decoration:underline; font-size:1rem;">← Plan Another Trip</button>
+        
+        <div class="itinerary-header">
+          <h2 id="res-title" class="hero-title" style="font-size: 2.5rem; margin-bottom: 1rem;"></h2>
+          <p id="res-summary" class="hero-subtitle"></p>
+          <div class="itinerary-stats">
+            <div class="stat-badge"><i data-lucide="calendar" aria-hidden="true"></i> <span id="res-days"></span></div>
+            <div class="stat-badge"><i data-lucide="wallet" aria-hidden="true"></i> <span id="res-budget"></span></div>
+            <div class="stat-badge" id="res-cost-badge" style="display:none;"><i data-lucide="dollar-sign" aria-hidden="true"></i> <span id="res-cost"></span></div>
+          </div>
+        </div>
+
+        <div id="tips-container" class="glass-card" style="margin-bottom: 3rem; padding: 1.5rem 2.5rem; display:none;">
+          <h3 style="margin-bottom: 1rem; color: var(--accent-primary); display: flex; align-items:center; gap:0.5rem;"><i data-lucide="sparkles" aria-hidden="true"></i> Local Insights</h3>
+          <ul id="res-tips" style="padding-left: 1.5rem; color: var(--text-muted);"></ul>
+        </div>
+
+        <div id="days-container"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    document.getElementById('trip-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const btnText = document.getElementById('btn-text');
+      const spinner = document.getElementById('spinner');
+      const errorBox = document.getElementById('error-box');
+      const submitBtn = document.getElementById('submit-btn');
+      
+      // Accessibility: Set busy state
+      document.getElementById('trip-form').setAttribute('aria-busy', 'true');
+      btnText.style.display = 'none';
+      spinner.style.display = 'block';
+      submitBtn.disabled = true;
+      errorBox.style.display = 'none';
+
+      const data = {
+        destination: document.getElementById('destination').value,
+        days: parseInt(document.getElementById('days').value),
+        travelers: parseInt(document.getElementById('travelers').value),
+        budget: document.getElementById('budget').value,
+        interests: document.getElementById('interests').value
+      };
+
+      try {
+        const res = await fetch('/api/v1/plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.detail || 'Server error occurred');
+        }
+
+        const itinerary = await res.json();
+        renderItinerary(itinerary);
+        
+        document.getElementById('form-container').style.display = 'none';
+        document.getElementById('results-container').style.display = 'block';
+      } catch (err) {
+        errorBox.textContent = err.message;
+        errorBox.style.display = 'block';
+      } finally {
+        document.getElementById('trip-form').setAttribute('aria-busy', 'false');
+        btnText.style.display = 'flex';
+        spinner.style.display = 'none';
+        submitBtn.disabled = false;
+      }
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      document.getElementById('results-container').style.display = 'none';
+      document.getElementById('form-container').style.display = 'block';
+      document.getElementById('days-container').innerHTML = '';
+      // Return focus to destination input for accessibility
+      document.getElementById('destination').focus();
+    });
+
+    function renderItinerary(data) {
+      document.getElementById('res-title').textContent = data.title;
+      document.getElementById('res-summary').textContent = data.summary;
+      document.getElementById('res-days').textContent = data.total_days + ' Days';
+      document.getElementById('res-budget').textContent = data.budget_level;
+      
+      if(data.estimated_total_cost) {
+        document.getElementById('res-cost-badge').style.display = 'flex';
+        document.getElementById('res-cost').textContent = data.estimated_total_cost;
+      }
+
+      const tipsList = document.getElementById('res-tips');
+      tipsList.innerHTML = '';
+      if(data.local_tips && data.local_tips.length > 0) {
+        document.getElementById('tips-container').style.display = 'block';
+        data.local_tips.forEach(tip => {
+          const li = document.createElement('li');
+          li.style.marginBottom = '0.5rem';
+          li.textContent = tip;
+          tipsList.appendChild(li);
+        });
+      }
+
+      const daysContainer = document.getElementById('days-container');
+      data.itinerary.forEach(day => {
+        let actsHtml = day.activities.map(act => `
+          <div class="activity-item">
+            <div class="activity-time">${act.time}</div>
+            <div class="activity-content">
+              <h4 class="activity-title">${act.title}</h4>
+              <p class="activity-desc">${act.description}</p>
+              <div class="activity-meta">
+                ${act.location ? `<span class="meta-item"><i data-lucide="map-pin"></i> ${act.location}</span>` : ''}
+                ${act.estimated_cost ? `<span class="meta-item"><i data-lucide="dollar-sign"></i> ${act.estimated_cost}</span>` : ''}
+                ${act.google_maps_search_url ? `
+                  <!-- (Google Services) Deep link into Google Maps -->
+                  <a href="${act.google_maps_search_url}" target="_blank" rel="noopener noreferrer" class="meta-item" aria-label="View ${act.title} on Google Maps">
+                    <i data-lucide="map"></i> Map
+                  </a>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        daysContainer.innerHTML += `
+          <div class="day-card">
+            <div class="day-header">
+              <div class="day-number" aria-label="Day ${day.day}">${day.day}</div>
+              <h3 class="day-theme">${day.theme}</h3>
+            </div>
+            <div>${actsHtml}</div>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
