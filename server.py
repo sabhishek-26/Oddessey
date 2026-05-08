@@ -111,9 +111,9 @@ class OdysseyHandler(http.server.SimpleHTTPRequestHandler):
     
     def send_security_headers(self) -> None:
         self.send_header('X-Content-Type-Options', 'nosniff')
-        self.send_header('X-Frame-Options', 'DENY')
+        self.send_header('X-Frame-Options', 'SAMEORIGIN')
         self.send_header('X-XSS-Protection', '1; mode=block')
-        self.send_header('Content-Security-Policy', "default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://geocoding-api.open-meteo.com https://api.open-meteo.com;")
+        self.send_header('Content-Security-Policy', "default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://geocoding-api.open-meteo.com https://api.open-meteo.com https://maps.google.com;")
 
     def end_headers(self) -> None:
         self.send_security_headers()
@@ -200,7 +200,6 @@ Return ONLY JSON with this structure:
 
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(json.dumps(result_data).encode('utf-8'))
             
@@ -214,7 +213,6 @@ Return ONLY JSON with this structure:
     def _send_error_response(self, code: int, message: str) -> None:
         self.send_response(code)
         self.send_header('Content-type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(json.dumps({"detail": message}).encode('utf-8'))
 
